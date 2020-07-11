@@ -1,9 +1,11 @@
 defmodule PhoenixTodo.Tasks.Task do
   use Ecto.Schema
   import Ecto.Changeset
+  alias PhoenixTodo.Categories.Category
 
   schema "tasks" do
     field :name, :string
+    belongs_to :category, Category
 
     timestamps()
   end
