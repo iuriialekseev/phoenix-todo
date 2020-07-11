@@ -13,7 +13,7 @@ defmodule PhoenixTodo.Tasks.Task do
   @doc false
   def changeset(task, attrs) do
     task
-    |> cast(attrs, [:name])
-    |> validate_required([:name])
+    |> cast(attrs, [:name, :category_id])
+    |> validate_required([:name, :category_id])
   end
 end
