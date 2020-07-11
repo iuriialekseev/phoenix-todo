@@ -14,6 +14,7 @@ defmodule PhoenixTodoWeb.Router do
 
     get "/", TaskController, :index
     resources "/tasks", TaskController
+    resources "/categories", CategoryController
   end
 
   if Mix.env() in [:dev, :test] do
