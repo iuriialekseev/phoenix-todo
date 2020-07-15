@@ -19,6 +19,8 @@ defmodule PhoenixTodoWeb.TaskController do
   end
 
   def create(conn, %{"task" => task_params}) do
+    categories = Categories.list_categories_for_select()
+
     case Tasks.create_task(task_params) do
       {:ok, task} ->
         conn
@@ -26,7 +28,7 @@ defmodule PhoenixTodoWeb.TaskController do
         |> redirect(to: Routes.task_path(conn, :show, task))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(conn, "new.html", changeset: changeset, categories: categories)
     end
   end
 
@@ -43,6 +45,7 @@ defmodule PhoenixTodoWeb.TaskController do
   end
 
   def update(conn, %{"id" => id, "task" => task_params}) do
+    categories = Categories.list_categories_for_select()
     task = Tasks.get_task!(id)
 
     case Tasks.update_task(task, task_params) do
@@ -52,7 +55,7 @@ defmodule PhoenixTodoWeb.TaskController do
         |> redirect(to: Routes.task_path(conn, :show, task))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", task: task, changeset: changeset)
+        render(conn, "edit.html", task: task, changeset: changeset, categories: categories)
     end
   end
 
