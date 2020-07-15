@@ -1,17 +1,21 @@
 defmodule PhoenixTodoWeb.TaskController do
   use PhoenixTodoWeb, :controller
 
+  alias PhoenixTodo.Repo
+
   alias PhoenixTodo.Tasks
   alias PhoenixTodo.Tasks.Task
+  alias PhoenixTodo.Categories
 
   def index(conn, _params) do
-    tasks = Tasks.list_tasks()
+    tasks = Tasks.list_tasks() |> Repo.preload(:category)
     render(conn, "index.html", tasks: tasks)
   end
 
   def new(conn, _params) do
+    categories = Categories.list_categories_for_select()
     changeset = Tasks.change_task(%Task{})
-    render(conn, "new.html", changeset: changeset)
+    render(conn, "new.html", changeset: changeset, categories: categories)
   end
 
   def create(conn, %{"task" => task_params}) do
@@ -27,14 +31,15 @@ defmodule PhoenixTodoWeb.TaskController do
   end
 
   def show(conn, %{"id" => id}) do
-    task = Tasks.get_task!(id)
+    task = Tasks.get_task!(id) |> Repo.preload(:category)
     render(conn, "show.html", task: task)
   end
 
   def edit(conn, %{"id" => id}) do
     task = Tasks.get_task!(id)
+    categories = Categories.list_categories_for_select()
     changeset = Tasks.change_task(task)
-    render(conn, "edit.html", task: task, changeset: changeset)
+    render(conn, "edit.html", task: task, changeset: changeset, categories: categories)
   end
 
   def update(conn, %{"id" => id, "task" => task_params}) do

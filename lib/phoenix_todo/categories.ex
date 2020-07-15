@@ -8,6 +8,10 @@ defmodule PhoenixTodo.Categories do
     Repo.all(Category)
   end
 
+  def list_categories_for_select do
+    Repo.all(from(c in Category, select: {c.name, c.id}))
+  end
+
   def get_category!(id), do: Repo.get!(Category, id)
 
   def create_category(attrs \\ %{}) do

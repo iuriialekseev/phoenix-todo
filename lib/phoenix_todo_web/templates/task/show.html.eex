@@ -7,6 +7,11 @@
     <%= @task.name %>
   </li>
 
+  <li>
+    <strong>Category:</strong>
+    <%= @task.category.name %>
+  </li>
+
 </ul>
 
 <span><%= link "Edit", to: Routes.task_path(@conn, :edit, @task) %></span>
